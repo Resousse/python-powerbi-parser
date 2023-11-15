@@ -1,7 +1,7 @@
 import os
 import json
-from table import Table
-from relationship import Relationship
+from .table import Table
+from .relationship import Relationship
 
 class PBIItemParser:
     def __init__(self, filepath, itemType):

@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="powerbi-parser",
-    version="1.0.0",
+    version="1.0.4",
     description="Parser Power BI files to browse assets",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -17,11 +17,11 @@ setup(
     license="Apache 2.0",
     classifiers=[
     ],
-    package_dir = {'powerbi-parser' : './'},
-    packages=["powerbi-parser"],
+    package_dir = {'powerBIParser' : './'},
+    packages=["powerBIParser"],
     package_data = {
-        'powerbi-parser': ['./LICENSE', './README.md', '*.py']
+        'powerBIParser': ['./LICENSE', './README.md', '*.py']
     },
-    include_package_data=True,
-    install_requires=["requests"],
+    exclude_package_data={'powerBIParser' : ["setup.py"]},
+    include_package_data=True
 )
