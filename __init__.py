@@ -1,8 +1,8 @@
 import re
 import sys
 import os
-from .pbiDatasetParser import PBIDatasetParser
-from .pbiReportParser import PBIReportParser
+from pbiDatasetParser import PBIDatasetParser
+from pbiReportParser import PBIReportParser
 
 class PowerBIParser:
     def __init__(self, filepath):
@@ -22,8 +22,3 @@ class PowerBIParser:
             dataset.parse()
         for report in self.reports:
             report.parse(self.datasets)
-
-if __name__ == "__main__":
-    parser = PowerBIParser("/Users/rapha/Documents/DIOR/AzureDevOps/PBI-EDV-My-KPIs")
-    parser.parse()
-    print(parser)

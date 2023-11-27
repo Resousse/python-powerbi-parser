@@ -1,5 +1,5 @@
-from .field import Field
-from .measure import Measure
+from field import Field
+from measure import Measure
 import json
 
 class Table:
@@ -10,8 +10,9 @@ class Table:
         self.annotations = tableItem["annotations"]
         self.fields = []
         self.sources = []
-        for col in tableItem["columns"]:
-            self.fields.append(Field(col, self))
+        if "columns" in tableItem:
+            for col in tableItem["columns"]:
+                self.fields.append(Field(col, self))
         if "measures" in tableItem:
             for col in tableItem["measures"]:
                 self.fields.append(Measure(col, self))

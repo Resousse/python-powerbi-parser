@@ -1,8 +1,8 @@
 import os
 import json
-from .table import Table
-from .relationship import Relationship
-from .pbiItemParser import PBIItemParser
+from table import Table
+from relationship import Relationship
+from pbiItemParser import PBIItemParser
 
 class PBIDatasetParser(PBIItemParser):
     def __init__(self, filepath):

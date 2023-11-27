@@ -1,14 +1,17 @@
-from .field import Field
+from field import Field
 import json
 
 class ReportField:
     def __init__(self, containerItem, dataset):
         self.containerJs = json.loads(containerItem["config"])
         self.name = self.containerJs["name"]
-        if not "singleVisual" in self.containerJs:
-            raise Exception("Missing single Visual")
-        self.visualType = self.containerJs["singleVisual"]["visualType"]
         self.fields = []
+        if not "singleVisual" in self.containerJs:
+            #raise Exception("Missing single Visual")
+            print ("Missing single Visual in {}".format(self.name))
+            return
+        self.visualType = self.containerJs["singleVisual"]["visualType"]
+        
         if not "projections" in self.containerJs["singleVisual"] or not self.containerJs["singleVisual"]["projections"]:
             if "objects" in self.containerJs["singleVisual"] and ("values" not in self.containerJs["singleVisual"]["objects"]or len(self.containerJs["singleVisual"]["objects"]["values"]) > 10):
                 return
@@ -28,7 +31,9 @@ class ReportField:
                             if field.name.lower() == fieldStr.lower():
                                 targetField = field
                 if targetField is None:
-                    raise Exception("{} is missing in dataset {}".format(queryRef, dataset.name))
+                    #raise Exception("{} is missing in dataset {}".format(queryRef, dataset.name))
+                    print ("{} is missing in dataset {}".format(queryRef, dataset.name))
+                    return
                 self.fields.append(targetField)
 
 class Section:
