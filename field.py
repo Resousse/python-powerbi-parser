@@ -1,5 +1,5 @@
 import json
-from fieldInterface import FieldInterface
+from .fieldInterface import FieldInterface
 
 class Field(FieldInterface):
     def __init__(self, fieldItem, table):

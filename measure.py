@@ -1,5 +1,5 @@
 import json
-from fieldInterface import FieldInterface
+from .fieldInterface import FieldInterface
 import re
 
 class Measure(FieldInterface):

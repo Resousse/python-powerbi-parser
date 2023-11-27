@@ -1,5 +1,5 @@
-from field import Field
-from measure import Measure
+from .field import Field
+from .measure import Measure
 import json
 
 class Table:

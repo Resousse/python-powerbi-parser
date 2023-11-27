@@ -1,8 +1,8 @@
 import os
 import json
-from pbiItemParser import PBIItemParser
-from pbiDatasetParser import PBIDatasetParser
-from section import Section
+from .pbiItemParser import PBIItemParser
+from .pbiDatasetParser import PBIDatasetParser
+from .section import Section
 
 class PBIReportParser(PBIItemParser):
     def __init__(self, filepath):

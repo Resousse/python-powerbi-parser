@@ -1,8 +1,8 @@
 import re
 import sys
 import os
-from pbiDatasetParser import PBIDatasetParser
-from pbiReportParser import PBIReportParser
+from .pbiDatasetParser import PBIDatasetParser
+from .pbiReportParser import PBIReportParser
 
 class PowerBIParser:
     def __init__(self, filepath):
@@ -22,3 +22,4 @@ class PowerBIParser:
             dataset.parse()
         for report in self.reports:
             report.parse(self.datasets)
+
