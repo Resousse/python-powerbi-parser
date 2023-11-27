@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="powerbi-parser",
-    version="1.0.4",
+    version="1.0.5",
     description="Parser Power BI files to browse assets",
     long_description=README,
     long_description_content_type="text/markdown",
