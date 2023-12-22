@@ -1,4 +1,4 @@
-from .field import Field
+from .fields import Field
 import json
 
 class Relationship:

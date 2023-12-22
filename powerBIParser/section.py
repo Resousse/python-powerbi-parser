@@ -1,5 +1,7 @@
-from .field import Field
+from .fields import Field
 import json
+import re
+from .fields import Measure
 
 class ReportField:
     def __init__(self, containerItem, dataset):
@@ -8,7 +10,8 @@ class ReportField:
         self.fields = []
         if not "singleVisual" in self.containerJs:
             #raise Exception("Missing single Visual")
-            print ("Missing single Visual in {}".format(self.name))
+            if "singleVisualGroup" not in self.containerJs:
+                print ("Missing single Visual in {}".format(self.name))
             return
         self.visualType = self.containerJs["singleVisual"]["visualType"]
         
@@ -20,21 +23,26 @@ class ReportField:
         for proj in self.containerJs["singleVisual"]["projections"]:
             for val in self.containerJs["singleVisual"]["projections"][proj]:
                 queryRef = val["queryRef"]
-                splt = queryRef.split(".")
-                tableStr = splt[0]
-                del splt[0]
-                fieldStr = ".".join(splt)
+                m = re.search('(([\w_\.]*)\.([\w ]+))', queryRef)
+                if not m:
+                    raise Exception("Unable to find match in : ".format(queryRef))
+                tableStr = m.group(2)
+                fieldStr = m.group(3)
                 targetField = None
+                measure = m.group(0) != queryRef
+
                 for table in dataset.tables:
                     if table.name.lower() == tableStr.lower():
                         for field in table.fields:
                             if field.name.lower() == fieldStr.lower():
-                                targetField = field
+                                targetField = Measure(fieldStr, "", "", "", queryRef if measure else "", val, table)
                 if targetField is None:
                     #raise Exception("{} is missing in dataset {}".format(queryRef, dataset.name))
                     print ("{} is missing in dataset {}".format(queryRef, dataset.name))
                     return
                 self.fields.append(targetField)
+    def __repr__(self):
+        return type(self).__name__+" = "+self.displayName
 
 class Section:
     def __init__(self, sectionItem, dataset):

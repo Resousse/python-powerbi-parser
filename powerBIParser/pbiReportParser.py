@@ -30,6 +30,7 @@ class PBIReportParser(PBIItemParser):
     def parse(self, datasets):
         self._parseGeneral(datasets)
         self._parseDetail(datasets)
+        self.parsed = True
     def toJSON(self):
         tmpdataset = None
         if hasattr(self, 'dataset'):

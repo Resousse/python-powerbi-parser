@@ -7,6 +7,7 @@ class PBIItemParser:
     def __init__(self, filepath, itemType):
         self.filepath = filepath
         self.itemType = itemType
+        self.parsed = False
     def _parseGeneral(self):
         if not os.path.isdir(self.filepath) or not self.filepath.lower().endswith("."+self.itemType.lower()):
             raise Exception("file path is not a folder or not a {} folder".format(self.itemType))
