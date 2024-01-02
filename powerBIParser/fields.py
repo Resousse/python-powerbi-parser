@@ -1,5 +1,6 @@
 import json
 import re
+import uuid
 
 class FieldInterface:
     def __init__(self, name, lineageTag, annotations, formatString, fieldItem, table):
@@ -8,9 +9,13 @@ class FieldInterface:
         self.tableName = table.name
         self.table = table
         self.itemType = "field"
+        if lineageTag == "":
+            lineageTag = str(uuid.uuid1())
         self.lineageTag = lineageTag
         self.annotations = annotations
         self.formatString = formatString
+        self.originalName = name
+
     def toJSON(self):
         tmptbl = self.table
         del self.table
