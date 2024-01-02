@@ -22,7 +22,7 @@ class PBIDatasetParser(PBIItemParser):
         self.tables = []
 
         for tab in dataset["model"]["tables"]:
-            tbl = Table(tab["name"],tab["lineageTag"], tab["annotations"],  tab["partitions"] if "partitions" in tab else None, tab)
+            tbl = Table(tab["name"],tab["lineageTag"], tab["annotations"] if "annotations" in tab else None,  tab["partitions"] if "partitions" in tab else None, tab)
             if "columns" in tab:
                 for col in tab["columns"]:
                     fld = Field(col["name"], col["lineageTag"], col["annotations"] if "annotations" in col else None, col["formatString"] if "formatString" in col else None,col["dataType"], col["summarizeBy"], col["sourceColumn"] if "sourceColumn" in col else "", col["sourceProviderType"] if "sourceProviderType" in col else "", col, tbl)
@@ -31,7 +31,7 @@ class PBIDatasetParser(PBIItemParser):
                     tbl.fields.append(fld)
             if "measures" in tab:
                 for col in tab["measures"]:
-                    mea = Measure(col["name"], col["lineageTag"], col["annotations"] if "annotations" in col else None, col["formatString"] if "formatString" in col else None, col["expression"], col, tbl)
+                    mea = Measure(col["name"], col["lineageTag"], col["annotations"] if "annotations" in col else None, col["formatString"] if "formatString" in col else None, col["expression"] if "expression" in col else "", col, tbl)
                     if col["name"] in tbl.renamedFields:
                         mea.originalName = tbl.renamedFields[col["name"]]
                     tbl.fields.append(mea)

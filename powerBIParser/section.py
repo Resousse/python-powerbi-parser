@@ -5,6 +5,8 @@ from .fields import Measure
 
 class ReportField:
     def __init__(self, containerItem, dataset):
+        if dataset is None:
+            return
         self.containerJs = json.loads(containerItem["config"])
         self.name = self.containerJs["name"]
         self.fields = []
@@ -30,7 +32,6 @@ class ReportField:
                 fieldStr = m.group(3)
                 targetField = None
                 measure = m.group(0) != queryRef
-
                 for table in dataset.tables:
                     if table.name.lower() == tableStr.lower():
                         for field in table.fields:

@@ -13,11 +13,12 @@ class Table:
         self.renamedFields = {}
         if self.partitions is not None:
             for part in self.partitions:
-                for exp in part["source"]["expression"]:
-                    if "Table.RenameColumns" in exp:
-                        r = re.findall('\{"([^"]+)"\s*,\s*"([^"]+)"\}', exp)
-                        for i in r:
-                            self.renamedFields[i[1]] = i[0]
+                if "expression" in part["source"]:
+                    for exp in part["source"]["expression"]:
+                        if "Table.RenameColumns" in exp:
+                            r = re.findall('\{"([^"]+)"\s*,\s*"([^"]+)"\}', exp)
+                            for i in r:
+                                self.renamedFields[i[1]] = i[0]
     def toJSON(self):
         tmpRaw = None
         if hasattr(self, "raw"):
