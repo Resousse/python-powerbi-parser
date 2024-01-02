@@ -15,8 +15,12 @@ class FieldInterface:
         self.annotations = annotations
         self.formatString = formatString
         self.originalName = name
-        self.description = self.raw["description"] if "description" in self.raw else ""
+        description = self.raw["description"] if "description" in self.raw else ""
         self.displayFolder = self.raw["displayFolder"] if "displayFolder" in self.raw else ""
+        if isinstance(description, list):
+            self.description = "\n".join(description)
+        else:
+            self.description = description
 
     def toJSON(self):
         tmptbl = self.table
