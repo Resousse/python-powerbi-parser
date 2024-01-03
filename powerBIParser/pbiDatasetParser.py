@@ -20,6 +20,7 @@ class PBIDatasetParser(PBIItemParser):
         self.culture = dataset["model"]["culture"]
         self.cultures = dataset["model"]["cultures"]
         self.tables = []
+        self.aliases = []
 
         for tab in dataset["model"]["tables"]:
             tbl = Table(tab["name"],tab["lineageTag"], tab["annotations"] if "annotations" in tab else None,  tab["partitions"] if "partitions" in tab else None, tab)
@@ -39,6 +40,16 @@ class PBIDatasetParser(PBIItemParser):
         self.relations = []
         for rel in dataset["model"]["relationships"]:
             self.relations.append(Relationship(rel, self.tables))
+        for culture in self.cultures:
+            if "linguisticMetadata" in culture and "content" in culture["linguisticMetadata"]:
+                for item, val in culture['linguisticMetadata']['content'].items():
+                    if isinstance(val, dict):
+                        for n,v in val.items():
+                            if "Definition" in v and "Binding" in v["Definition"]:
+                                dstName = v['Definition']['Binding']['ConceptualEntity']
+                                dstField = v['Definition']['Binding']['ConceptualProperty'] if "ConceptualProperty" in v['Definition']['Binding'] else None
+                                self.aliases.append({"srcName": n, "dstEntity": dstName, "dstField": dstField, "type": item})
+
         self.resolveMeasures()
         self.parsed = True
     

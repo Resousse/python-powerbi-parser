@@ -59,14 +59,14 @@ class Measure(FieldInterface):
         else:
             self.expression = expression
         self.refFields = []
-        matches = re.findall('(([\w_\.]*)\[([\w ]+)\])', self.expression)
+        matches = re.findall("([\w_\.]*|'([^']+)')\[([\w ]+)\]", self.expression)
         if matches:
             #raise Exception("{} uses two fields".format(self))
             #if len(matches) > 1:
             #    print("{} uses two fields".format(self))
             for match in matches:
-                refFld = {"fromTable" : match[1], "fromField": match[2]}
-                if match[1].lower() == '' or table.name.lower() == match[1].lower():
+                refFld = {"fromTable" : match[0] if "'" not in match[0] else match[1], "fromField": match[2]}
+                if refFld["fromTable"].lower() == '' or table.name.lower() == refFld["fromTable"].lower():
                     for field in table.fields:
                         if field.name.lower() == match[2].lower():
                             refFld["field"] = field

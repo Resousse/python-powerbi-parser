@@ -25,21 +25,25 @@ class ReportField:
         for proj in self.containerJs["singleVisual"]["projections"]:
             for val in self.containerJs["singleVisual"]["projections"][proj]:
                 queryRef = val["queryRef"]
-                m = re.search('(([\w_\.]*)\.([\w ]+))', queryRef)
+                m = re.search('(([\w_ \(\)\[\]\.\+-]*)\.([\w ]+))', queryRef)
                 if not m:
                     raise Exception("Unable to find match in : ".format(queryRef))
                 tableStr = m.group(2)
                 fieldStr = m.group(3)
                 targetField = None
                 measure = m.group(0) != queryRef
+                if queryRef[-1] == ")":
+                   idx = tableStr.index("(")
+                   tableStr = tableStr[idx+1:]
+                #aliases = list(filter(lambda a : a["dstEntity"] == tableStr and a["dstField"] == fieldStr, dataset.aliases))
                 for table in dataset.tables:
                     if table.name.lower() == tableStr.lower():
                         for field in table.fields:
                             if field.name.lower() == fieldStr.lower():
                                 targetField = Measure(fieldStr, "", "", "", queryRef if measure else "", val, table)
                                 targetField.refFields.append(field)
+                
                 if targetField is None or len(targetField.refFields) == 0:
-                    #raise Exception("{} is missing in dataset {}".format(queryRef, dataset.name))
                     print ("{} is missing in dataset {}".format(queryRef, dataset.name))
                     return
                 self.fields.append(targetField)
