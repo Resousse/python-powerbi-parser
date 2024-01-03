@@ -59,16 +59,20 @@ class Measure(FieldInterface):
         else:
             self.expression = expression
         self.refFields = []
-        matches = re.findall("([\w_\.]*|'([^']+)')\[([\w ]+)\]", self.expression)
+        matches = re.findall("(([\w_\.]*|'([^']+)')\[([\w ]+)\])", self.expression)
         if matches:
-            #raise Exception("{} uses two fields".format(self))
-            #if len(matches) > 1:
-            #    print("{} uses two fields".format(self))
+            if "'" not in self.expression and  self.expression[-1] == ")" and len(matches) == 1:
+                matches2 = re.findall('(([\w_ \(\)\[\]\.\+-]*)\.([\w ]+))', self.expression)
+                if len(matches2):
+                    if self.expression[-1] == ")":
+                        idx = matches2[0][1].find("(")
+                    matches = ((self.expression, matches2[0][1][idx+1:], matches2[0][2], matches2[0][2]),)
+
             for match in matches:
-                refFld = {"fromTable" : match[0] if "'" not in match[0] else match[1], "fromField": match[2]}
+                refFld = {"fromTable" : match[1] if "'" not in match[1] else match[2], "fromField": match[3]}
                 if refFld["fromTable"].lower() == '' or table.name.lower() == refFld["fromTable"].lower():
                     for field in table.fields:
-                        if field.name.lower() == match[2].lower():
+                        if field.name.lower() == match[3].lower():
                             refFld["field"] = field
                     
                 self.refFields.append(refFld)

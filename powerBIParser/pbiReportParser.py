@@ -3,6 +3,7 @@ import json
 from .pbiItemParser import PBIItemParser
 from .pbiDatasetParser import PBIDatasetParser
 from .section import Section
+from .fields import Measure
 
 class PBIReportParser(PBIItemParser):
     def __init__(self, filepath):

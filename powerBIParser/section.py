@@ -41,7 +41,7 @@ class ReportField:
                         for field in table.fields:
                             if field.name.lower() == fieldStr.lower():
                                 targetField = Measure(fieldStr, "", "", "", queryRef if measure else "", val, table)
-                                targetField.refFields.append(field)
+                                targetField.refFields.append({"field" : field})
                 
                 if targetField is None or len(targetField.refFields) == 0:
                     print ("{} is missing in dataset {}".format(queryRef, dataset.name))
