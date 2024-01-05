@@ -26,7 +26,7 @@ class PBIDatasetParser(PBIItemParser):
             tbl = Table(tab["name"],tab["lineageTag"], tab["annotations"] if "annotations" in tab else None,  tab["partitions"] if "partitions" in tab else None, tab)
             if "columns" in tab:
                 for col in tab["columns"]:
-                    fld = Field(col["name"], col["lineageTag"], col["annotations"] if "annotations" in col else None, col["formatString"] if "formatString" in col else None,col["dataType"], col["summarizeBy"], col["sourceColumn"] if "sourceColumn" in col else "", col["sourceProviderType"] if "sourceProviderType" in col else "", col, tbl)
+                    fld = Field(col["name"], col["lineageTag"], col["annotations"] if "annotations" in col else None, col["formatString"] if "formatString" in col else None,col["dataType"], col["summarizeBy"], col["sourceColumn"] if "sourceColumn" in col else "", col["sourceProviderType"] if "sourceProviderType" in col else "", col["expression"] if "expression" in col else "", col, tbl)
                     if col["name"] in tbl.renamedFields:
                         fld.originalName = tbl.renamedFields[col["name"]]
                     tbl.fields.append(fld)
@@ -56,7 +56,7 @@ class PBIDatasetParser(PBIItemParser):
     def resolveMeasures(self):
         for table in self.tables:
             for mea in table.fields:
-                if not isinstance(mea, Measure):
+                if mea.itemType != "calculated":
                     continue
                 for refFld in mea.refFields:
                     for t in self.tables:
